@@ -16,7 +16,7 @@ Bu paket doğrudan yayınlanabilir statik HTML, CSS ve JavaScript çıktısıdı
 1. ZIP’i açın ve içeriğin depo kökünde olduğundan emin olun; `index.html` üst klasör içinde kalmamalıdır.
 2. Tüm dosya ve klasörleri aynı yolları koruyarak yükleyin.
 3. Pages kaynağını depo kökü olarak seçin.
-4. Özel alan adı kullanılacaksa paketteki `CNAME` yalnız `darendeajans.com` değerini içerir. DNS değişikliklerini yalnız alan adı sahibi yapmalıdır.
+4. Özel alan adı kullanılacaksa paketteki `CNAME` yalnız `darendedijital.com` değerini içerir. DNS değişikliklerini yalnız alan adı sahibi yapmalıdır.
 
 ## Hostinger / standart barındırma
 
@@ -24,7 +24,7 @@ Paket içeriğini alan adının belge köküne (`public_html` gibi) yükleyin. S
 
 ## Yapılandırılmayı bekleyen alanlar
 
-`assets/js/config.js` içinde ikinci telefon, WhatsApp, açık adres, harita embed URL’si, form endpoint’i, Search Console doğrulaması ve Analytics kimliği boş bırakılmıştır. Gerçek değerler doğrulanmadan etkinleştirilmemelidir.
+`assets/js/config.js` içinde ikinci telefon, açık adres, harita embed URL’si, form endpoint’i ve Analytics kimliği gibi doğrulanmamış alanlar boş bırakılmıştır. Search Console için **Alan adı (Domain) mülkü + DNS TXT doğrulaması** önerilir; bu nedenle HTML'e uydurma bir doğrulama etiketi eklenmemiştir. Ayrıntı: `seo/search-console-kurulum.md`.
 
 ## Form ve hava durumu
 
@@ -33,3 +33,8 @@ Paket içeriğini alan adının belge köküne (`public_html` gibi) yükleyin. S
 ## Üçüncü taraf varlıklar
 
 CDN kullanılmaz. Grid dosyası proje için kullanılan sınıfları içeren yerel Bootstrap 5 uyumlu bir alt kümedir. Liberation Sans font dosyaları Mozilla PDF.js dağıtımındaki açık lisanslı varlıklardan, görsel işlemleme Sharp paketinden yararlanılarak hazırlanmıştır. Ayrıntı: `reports/third-party-packages.md`.
+
+
+## Güncel kalite kontrolü
+
+11 Ağustos 2026 tarihli alan adı, responsive, navigasyon, animasyon ve SEO teknik kontrolleri `reports/qa-2026-08-11.md` dosyasındadır.

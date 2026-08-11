@@ -19,11 +19,24 @@
     const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     const progress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
     if (scrollProgress) scrollProgress.style.setProperty("--scroll-progress", String(progress));
-    if (siteHeader) siteHeader.classList.toggle("is-scrolled", window.scrollY > 24);
+    if (siteHeader) {
+      siteHeader.classList.toggle("is-scrolled", window.scrollY > 24);
+      document.documentElement.style.setProperty(
+        "--mobile-nav-top",
+        `${Math.max(0, Math.round(siteHeader.getBoundingClientRect().bottom))}px`
+      );
+    }
     scrollFrame = 0;
   };
   window.addEventListener(
     "scroll",
+    () => {
+      if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScrollEffects);
+    },
+    { passive: true }
+  );
+  window.addEventListener(
+    "resize",
     () => {
       if (!scrollFrame) scrollFrame = requestAnimationFrame(updateScrollEffects);
     },
@@ -37,25 +50,42 @@
   function closeMenu() {
     if (!menuButton || !mainNav) return;
     menuButton.setAttribute("aria-expanded", "false");
+    menuButton.setAttribute("aria-label", "Menüyü aç");
     mainNav.classList.remove("open");
     document.body.classList.remove("menu-open");
+    $$(".nav-item.open", mainNav).forEach((item) => item.classList.remove("open"));
+    $$(".nav-toggle[aria-expanded='true']", mainNav).forEach((toggle) =>
+      toggle.setAttribute("aria-expanded", "false")
+    );
   }
 
   if (menuButton && mainNav) {
     menuButton.addEventListener("click", () => {
       const open = menuButton.getAttribute("aria-expanded") === "true";
-      menuButton.setAttribute("aria-expanded", String(!open));
-      mainNav.classList.toggle("open", !open);
-      document.body.classList.toggle("menu-open", !open);
+      const nextOpen = !open;
+      menuButton.setAttribute("aria-expanded", String(nextOpen));
+      menuButton.setAttribute("aria-label", nextOpen ? "Menüyü kapat" : "Menüyü aç");
+      mainNav.classList.toggle("open", nextOpen);
+      document.body.classList.toggle("menu-open", nextOpen);
     });
 
-    $$(".nav-link", mainNav).forEach((link) => link.addEventListener("click", closeMenu));
+    $$("a", mainNav).forEach((link) => link.addEventListener("click", closeMenu));
   }
 
   $$(".nav-toggle").forEach((toggle) => {
     toggle.addEventListener("click", () => {
       const parent = toggle.closest(".nav-item");
-      const open = parent.classList.toggle("open");
+      if (!parent) return;
+      const open = !parent.classList.contains("open");
+      if (mainNav) {
+        $$(".nav-item.open", mainNav).forEach((item) => {
+          if (item === parent) return;
+          item.classList.remove("open");
+          const otherToggle = $(".nav-toggle", item);
+          if (otherToggle) otherToggle.setAttribute("aria-expanded", "false");
+        });
+      }
+      parent.classList.toggle("open", open);
       toggle.setAttribute("aria-expanded", String(open));
     });
   });
