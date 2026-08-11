@@ -101,7 +101,7 @@
 
   const rotatingWord = $(".rotating-word");
   if (rotatingWord && !reduceMotion) {
-    const words = ["Web Tasarım", "Google Haritalar", "SEO", "Sosyal Medya"];
+    const words = ["Web Tasarım", "SEO", "Google Ads", "Meta Ads", "Yerel Görünürlük"];
     let wordIndex = 0;
     window.setInterval(() => {
       rotatingWord.classList.add("is-changing");
@@ -110,8 +110,18 @@
         rotatingWord.textContent = words[wordIndex];
         rotatingWord.classList.remove("is-changing");
       }, 190);
-    }, 2500);
+    }, 2100);
   }
+
+  const autoRevealSelectors = [".section-heading", ".score-shell", ".cta-panel", ".region-card", ".content-card", ".faq-list", ".trust-item"];
+  autoRevealSelectors.forEach((selector, selectorIndex) => {
+    $$(selector).forEach((item, index) => {
+      if (!item.classList.contains("reveal")) item.classList.add("reveal");
+      if (!item.dataset.reveal && selectorIndex > 1) {
+        item.dataset.reveal = index % 3 === 0 ? "left" : index % 3 === 1 ? "zoom" : "right";
+      }
+    });
+  });
 
   const revealItems = $$(".reveal");
   revealItems.forEach((item, index) => {
@@ -141,14 +151,20 @@
         if (frame) cancelAnimationFrame(frame);
         frame = requestAnimationFrame(() => {
           const rect = card.getBoundingClientRect();
-          const x = (event.clientX - rect.left) / rect.width - 0.5;
-          const y = (event.clientY - rect.top) / rect.height - 0.5;
-          card.style.transform = `perspective(900px) rotateX(${y * -2.4}deg) rotateY(${x * 3.2}deg) translateY(-5px)`;
+          const localX = event.clientX - rect.left;
+          const localY = event.clientY - rect.top;
+          const x = localX / rect.width - 0.5;
+          const y = localY / rect.height - 0.5;
+          card.style.setProperty("--pointer-x", `${Math.max(0, Math.min(100, (localX / rect.width) * 100))}%`);
+          card.style.setProperty("--pointer-y", `${Math.max(0, Math.min(100, (localY / rect.height) * 100))}%`);
+          card.style.transform = `perspective(1050px) rotateX(${y * -4.2}deg) rotateY(${x * 5.2}deg) translateY(-8px) scale(1.008)`;
         });
       });
       card.addEventListener("pointerleave", () => {
         if (frame) cancelAnimationFrame(frame);
         card.style.transform = "";
+        card.style.setProperty("--pointer-x", "50%");
+        card.style.setProperty("--pointer-y", "50%");
       });
     });
   }
@@ -303,10 +319,23 @@
       if (!contactForm.reportValidity()) return;
 
       if (!endpoint) {
+        const data = new FormData(contactForm);
+        const subject = `Darende Dijital proje talebi — ${data.get("service") || "Genel"}`;
+        const body = [
+          `Ad: ${data.get("name") || ""}`,
+          `Telefon: ${data.get("phone") || ""}`,
+          `E-posta: ${data.get("email") || ""}`,
+          `Hizmet: ${data.get("service") || ""}`,
+          "",
+          "Mesaj:",
+          String(data.get("message") || "")
+        ].join("\n");
+        const mailto = `mailto:darendeajans@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         status.innerHTML =
-          'Çevrim içi form servisi henüz yapılandırılmadı. Lütfen <a href="tel:+905454644452">0545 464 44 52</a> numarasını arayın veya <a href="mailto:darendeajans@gmail.com">darendeajans@gmail.com</a> adresine yazın.';
+          'Talebiniz hazırlandı. E-posta uygulamanız açılmazsa <a href="mailto:darendeajans@gmail.com">darendeajans@gmail.com</a> adresine doğrudan yazabilirsiniz.';
         status.classList.add("visible");
         status.focus();
+        window.location.href = mailto;
         return;
       }
 

@@ -24,7 +24,7 @@ Paket içeriğini alan adının belge köküne (`public_html` gibi) yükleyin. S
 
 ## Yapılandırılmayı bekleyen alanlar
 
-`assets/js/config.js` içinde ikinci telefon, açık adres, harita embed URL’si, form endpoint’i ve Analytics kimliği gibi doğrulanmamış alanlar boş bırakılmıştır. Search Console için **Alan adı (Domain) mülkü + DNS TXT doğrulaması** önerilir; bu nedenle HTML'e uydurma bir doğrulama etiketi eklenmemiştir. Ayrıntı: `seo/search-console-kurulum.md`.
+`assets/js/config.js` içinde ikinci telefon, WhatsApp, açık adres, harita embed URL’si, form endpoint’i, Search Console doğrulaması ve Analytics kimliği boş bırakılmıştır. Gerçek değerler doğrulanmadan etkinleştirilmemelidir.
 
 ## Form ve hava durumu
 
@@ -35,6 +35,9 @@ Paket içeriğini alan adının belge köküne (`public_html` gibi) yükleyin. S
 CDN kullanılmaz. Grid dosyası proje için kullanılan sınıfları içeren yerel Bootstrap 5 uyumlu bir alt kümedir. Liberation Sans font dosyaları Mozilla PDF.js dağıtımındaki açık lisanslı varlıklardan, görsel işlemleme Sharp paketinden yararlanılarak hazırlanmıştır. Ayrıntı: `reports/third-party-packages.md`.
 
 
-## Güncel kalite kontrolü
-
-11 Ağustos 2026 tarihli alan adı, responsive, navigasyon, animasyon ve SEO teknik kontrolleri `reports/qa-2026-08-11.md` dosyasındadır.
+## 2026-08-11 Ultra Professional / SEO revizyonu
+- Orijinal premium tasarım tabanı korunarak mobil/tablet/masaüstü motion sistemi güçlendirildi.
+- 768–900px portrait tablet hero okunabilirliği özel media query ile düzeltildi.
+- Domain sinyalleri `darendedijital.com` altında birleştirildi.
+- Malatya için tek özgün pillar sayfa eklendi: `/malatya-dijital-ajans/`.
+- Search Console ve rakip araştırma notları `seo/` klasöründedir.
